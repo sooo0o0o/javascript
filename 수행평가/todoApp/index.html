@@ -16,17 +16,22 @@
         const inputTodo = document.getElementById("inputTodo");
         const btnAdd = document.getElementById("btnAdd");
 
-        //등록
-        btnAdd.addEventListener("click", function (e) {
-          const todoValue = inputTodo.value;
+        //localStorage에서 기존 todoList 목록 불러오기 or 없을시 빈 배열
+        let todoLists = JSON.parse(localStorage.getItem("todoLists")) || [];
 
+        //todoList 를 DOM에 추가
+        /*
+            innerText : 요소 내부에 표시될 텍스트 내용을 지정하기 위한 프로퍼티
+            사용자가 입력한 값(inputTodo)을 todoValue에 저장하고,
+            그 값을 <li>요소의 innerText에 할당
+        */
+        function addTodoListDOM(todoValue) {
           const listItem = document.createElement("li");
           listItem.className = "d-flex list-group-item";
           listItem.innerText = todoValue;
-          //innerText : 요소 내부에 표시될 텍스트 내용을 지정하기 위한 프로퍼티
-          //사용자가 입력한 값(inputTodo)을 todoValue에 저장하고,
-          //그 값을 <li>요소의 innerText에 할당
 
+          //추후 삭제시에도 식별하기 위해서 data 속성에 저장
+          listItem.setAttribute("data-todo", todoValue);
           const listBtn = document.createElement("button");
           listBtn.className = "btn-close ms-auto";
 
@@ -41,9 +46,28 @@
             //e.target : 이벤트가 발생한 요소
             //.parentNode : 그 요소의 부모노드를 반환
             todoList.removeChild(pNode);
+
+            // pNode 의 값과 일치하는 data-todo의 값을 제거
+            let todoText = pNode.getAttribute("data-todo");
+            todoLists = todoLists.filter((todo) => todo !== todoText);
+            localStorage.setItem("todoLists", JSON.stringify(todoLists));
           };
           listItem.appendChild(listBtn);
           todoList.appendChild(listItem);
+        }
+
+        //출력
+        todoLists.forEach((todo) => {
+          addTodoListDOM(todo);
+        });
+
+        //등록
+        btnAdd.addEventListener("click", function (e) {
+          const todoValue = inputTodo.value;
+
+          addTodoListDOM(todoValue);
+          todoLists.push(todoValue);
+          localStorage.setItem("todoLists", JSON.stringify(todoLists));
 
           inputTodo.value = "";
         });
