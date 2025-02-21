@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1. jQuery</title>
+    <!--
+        날짜 : 2025.02.21
+        이름 : 곽혜수
+        내용 : 8장 jQuery 실습하기
+
+        <script src="./js/jquery-3.7.1.js"></script> -> jquery 파일 다운로드 및 코드 필수!
+    -->
+    <script src="./js/jquery-3.7.1.js"></script>
+    <script>
+      //JAVA Script = 바닐라 스크립트
+      document.addEventListener("DOMContentLoaded", function () {
+        const city = document.getElementById("city");
+        const li = city.getElementsByTagName("li");
+        li[0].style.color = "red";
+      });
+
+      //JQuery
+      $(document).ready(function () {
+        $("#city > li:nth-child(2)").css("color", "olive");
+      });
+    </script>
+  </head>
+  <body>
+    <h3>1.jQuery</h3>
+
+    <ul id="city">
+      <li>서울</li>
+      <li>대전</li>
+      <li>대구</li>
+      <li>부산</li>
+      <li>광주</li>
+    </ul>
+  </body>
+</html>
